@@ -82,6 +82,36 @@
           <file name="sl_syscalls.c" uri="studio:/sdk/platform/common/src/sl_syscalls.c"/>
         </folder>
       </folder>
+      <folder name="driver">
+        <folder name="button">
+          <folder name="src">
+            <file name="sl_button.c" uri="studio:/sdk/platform/driver/button/src/sl_button.c"/>
+            <file name="sl_simple_button.c" uri="studio:/sdk/platform/driver/button/src/sl_simple_button.c"/>
+          </folder>
+          <folder name="inc">
+            <file name="sl_button.h" uri="studio:/sdk/platform/driver/button/inc/sl_button.h"/>
+            <file name="sl_simple_button.h" uri="studio:/sdk/platform/driver/button/inc/sl_simple_button.h"/>
+          </folder>
+        </folder>
+        <folder name="gpio">
+          <folder name="src">
+            <file name="sl_gpio.c" uri="studio:/sdk/platform/driver/gpio/src/sl_gpio.c"/>
+          </folder>
+          <folder name="inc">
+            <file name="sl_gpio.h" uri="studio:/sdk/platform/driver/gpio/inc/sl_gpio.h"/>
+          </folder>
+        </folder>
+        <folder name="leddrv">
+          <folder name="src">
+            <file name="sl_led.c" uri="studio:/sdk/platform/driver/leddrv/src/sl_led.c"/>
+            <file name="sl_simple_led.c" uri="studio:/sdk/platform/driver/leddrv/src/sl_simple_led.c"/>
+          </folder>
+          <folder name="inc">
+            <file name="sl_led.h" uri="studio:/sdk/platform/driver/leddrv/inc/sl_led.h"/>
+            <file name="sl_simple_led.h" uri="studio:/sdk/platform/driver/leddrv/inc/sl_simple_led.h"/>
+          </folder>
+        </folder>
+      </folder>
       <folder name="service">
         <folder name="clock_manager">
           <folder name="src">
@@ -244,26 +274,6 @@
           <file name="em_timer.h" uri="studio:/sdk/platform/emlib/inc/em_timer.h"/>
         </folder>
       </folder>
-      <folder name="driver">
-        <folder name="gpio">
-          <folder name="src">
-            <file name="sl_gpio.c" uri="studio:/sdk/platform/driver/gpio/src/sl_gpio.c"/>
-          </folder>
-          <folder name="inc">
-            <file name="sl_gpio.h" uri="studio:/sdk/platform/driver/gpio/inc/sl_gpio.h"/>
-          </folder>
-        </folder>
-        <folder name="leddrv">
-          <folder name="src">
-            <file name="sl_led.c" uri="studio:/sdk/platform/driver/leddrv/src/sl_led.c"/>
-            <file name="sl_simple_led.c" uri="studio:/sdk/platform/driver/leddrv/src/sl_simple_led.c"/>
-          </folder>
-          <folder name="inc">
-            <file name="sl_led.h" uri="studio:/sdk/platform/driver/leddrv/inc/sl_led.h"/>
-            <file name="sl_simple_led.h" uri="studio:/sdk/platform/driver/leddrv/inc/sl_simple_led.h"/>
-          </folder>
-        </folder>
-      </folder>
       <folder name="peripheral">
         <folder name="inc">
           <file name="sl_hal_bus.h" uri="studio:/sdk/platform/peripheral/inc/sl_hal_bus.h"/>
@@ -354,16 +364,17 @@
       </folder>
     </folder>
   </folder>
-  <file name="app.c" linked="false" uri="studio:/sdk/app/common/example/blink_kernel_freertos/app.c"/>
-  <file name="blink.c" linked="false" uri="studio:/sdk/app/common/example/blink_kernel_freertos/blink.c"/>
-  <file name="app.h" linked="false" uri="studio:/sdk/app/common/example/blink_kernel_freertos/app.h"/>
-  <file name="blink.h" linked="false" uri="studio:/sdk/app/common/example/blink_kernel_freertos/blink.h"/>
-  <file name="readme.md" linked="false" uri="studio:/sdk/app/common/example/blink_kernel_freertos/readme.md"/>
+  <file name="app.c" linked="false" uri="studio:/project/app.c"/>
+  <file name="blink.c" linked="false" uri="studio:/project/blink.c"/>
+  <file name="app.h" linked="false" uri="studio:/project/app.h"/>
+  <file name="blink.h" linked="false" uri="studio:/project/blink.h"/>
+  <file name="readme.md" linked="false" uri="studio:/project/readme.md"/>
   <file name="main.c" generated="true" linked="false"/>
   <includePath uri="studio:/project/"/>
   <includePath uri="studio:/sdk/platform/Device/SiliconLabs/EFR32MG24/Include"/>
   <includePath uri="studio:/sdk/platform/common/inc"/>
   <includePath uri="studio:/sdk/hardware/board/inc"/>
+  <includePath uri="studio:/sdk/platform/driver/button/inc"/>
   <includePath uri="studio:/sdk/platform/service/clock_manager/inc"/>
   <includePath uri="studio:/sdk/platform/service/clock_manager/src"/>
   <includePath uri="studio:/sdk/platform/CMSIS/Core/Include"/>

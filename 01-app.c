@@ -15,11 +15,16 @@
  *
  ******************************************************************************/
 #include "blink.h"
-
+#include "FreeRTOS.h"
+#include "semphr.h"
 /***************************************************************************//**
  * Initialize application.
  ******************************************************************************/
+SemaphoreHandle_t mutex_handle;
+StaticSemaphore_t mutex_buffer;
 void app_init(void)
 {
-  blink_init();
+  mutex_handle = xSemaphoreCreateMutexStatic(&mutex_buffer);
+  task1_init();
+  task2_init();
 }

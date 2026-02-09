@@ -17,20 +17,18 @@
 
 #include "sl_simple_led.h"
 #include "sl_simple_led_instances.h"
+#include "sl_simple_button_instances.h"
 #include "FreeRTOS.h"
+#include "semphr.h"
 #include "task.h"
+#include "timers.h"
 
 /*******************************************************************************
  *******************************   DEFINES   ***********************************
  ******************************************************************************/
 
-#ifndef LED_INSTANCE
-#define LED_INSTANCE               sl_led_led0
-#endif
 
-#ifndef TOOGLE_DELAY_MS
-#define TOOGLE_DELAY_MS            1000
-#endif
+
 
 #ifndef BLINK_TASK_STACK_SIZE
 #define BLINK_TASK_STACK_SIZE      configMINIMAL_STACK_SIZE
@@ -44,6 +42,9 @@
 #define EXAMPLE_USE_STATIC_ALLOCATION      1
 #endif
 
+extern SemaphoreHandle_t mutex_handle;
+
+
 /*******************************************************************************
  ***************************  LOCAL VARIABLES   ********************************
  ******************************************************************************/
@@ -52,8 +53,8 @@
  *********************   LOCAL FUNCTION PROTOTYPES   ***************************
  ******************************************************************************/
 
-static void blink_task(void *arg);
-
+static void task2_task(void *arg);
+void timer_callback(TimerHandle_t timer_handle);
 /*******************************************************************************
  **************************   GLOBAL FUNCTIONS   *******************************
  ******************************************************************************/
@@ -61,7 +62,7 @@ static void blink_task(void *arg);
 /***************************************************************************//**
  * Initialize blink example.
  ******************************************************************************/
-void blink_init(void)
+void task2_init(void)
 {
   TaskHandle_t xHandle = NULL;
 
@@ -71,7 +72,7 @@ void blink_init(void)
   static StackType_t  xStack[BLINK_TASK_STACK_SIZE];
 
   // Create Blink Task without using any dynamic memory allocation
-  xHandle = xTaskCreateStatic(blink_task,
+  xHandle = xTaskCreateStatic(task2_task,
                               "blink task",
                               BLINK_TASK_STACK_SIZE,
                               ( void * ) NULL,
@@ -89,7 +90,7 @@ void blink_init(void)
   BaseType_t xReturned = pdFAIL;
 
   // Create Blink Task using dynamic memory allocation
-  xReturned = xTaskCreate(blink_task,
+  xReturned = xTaskCreate(task2_task,
                           "blink task",
                           BLINK_TASK_STACK_SIZE,
                           ( void * ) NULL,
@@ -106,18 +107,42 @@ void blink_init(void)
 /*******************************************************************************
  * Blink task.
  ******************************************************************************/
-static void blink_task(void *arg)
+static void task2_task(void *arg)
 {
   (void)&arg;
+  TimerHandle_t timer_handle;
+  StaticTimer_t timer_buffer;
+  timer_handle = xTimerCreateStatic("task 2 timer", // const char * const pcTimerName,
+                  pdMS_TO_TICKS(2000),   // const TickType_t xTimerPeriod,
+                  pdTRUE,               // const UBaseType_t uxAutoReload,
+                  NULL,                     // void * const pvTimerID,
+                  timer_callback,       // TimerCallbackFunction_t pxCallbackFunction
+                  &timer_buffer);       // StaticTimer_t *pxTimerBuffer
 
   //Use the provided calculation macro to convert milliseconds to OS ticks
-  const TickType_t xDelay = pdMS_TO_TICKS(TOOGLE_DELAY_MS);;
+  const TickType_t xDelay = pdMS_TO_TICKS(100);
+  xTimerStart(timer_handle, portMAX_DELAY);
 
   while (1) {
     //Wait for specified delay
     vTaskDelay(xDelay);
-
-    // Toggle led
-    sl_led_toggle(&LED_INSTANCE);
   }
+}
+
+void timer_callback(TimerHandle_t timer_handle)
+{
+  (void) timer_handle;
+  if(sl_led_get_state(&sl_led_led1))
+    {
+      sl_led_turn_off(&sl_led_led1);
+      xSemaphoreGive(mutex_handle);
+    }
+  else
+    {
+      if(xSemaphoreTake(mutex_handle, 0) == pdTRUE)
+          {
+            sl_led_turn_on(&sl_led_led1);
+          }
+    }
+
 }
