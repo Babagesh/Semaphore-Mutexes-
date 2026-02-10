@@ -236,7 +236,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="01-task2.c|01-task1.c|01-app.c|trashed_modified_files|blink_kernel_freertos_hw4_cmake|blink_kernel_freertos_hw4_iar_cmake" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="02-task2.c|02-task1.c|02-app.c|01-task2.c|01-task1.c|01-app.c|trashed_modified_files|blink_kernel_freertos_hw4_cmake|blink_kernel_freertos_hw4_iar_cmake" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

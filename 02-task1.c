@@ -43,7 +43,7 @@
 #define EXAMPLE_USE_STATIC_ALLOCATION      1
 #endif
 
-extern SemaphoreHandle_t mutex_handle;
+extern SemaphoreHandle_t semaphore_handle;
 /*******************************************************************************
  ***************************  LOCAL VARIABLES   ********************************
  ******************************************************************************/
@@ -121,15 +121,9 @@ static void task1_task(void *arg)
           {
             vTaskDelay(xDelay);
           }
-        if(sl_led_get_state(&sl_led_led0))
+        if(xSemaphoreGive(semaphore_handle) == pdFAIL)
           {
-            sl_led_turn_off(&sl_led_led0);
-            xSemaphoreGive(mutex_handle);
-          }
-        else
-          {
-            if(xSemaphoreTake(mutex_handle, portMAX_DELAY) == pdTRUE)
-              sl_led_turn_on(&sl_led_led0);
+            sl_led_turn_on(&sl_led_led0);
           }
         }
     vTaskDelay(xDelay);

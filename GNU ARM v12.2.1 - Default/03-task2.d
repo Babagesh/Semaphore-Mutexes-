@@ -1,4 +1,4 @@
-02-task1.o: ../02-task1.c \
+03-task2.o: ../03-task2.c \
  /Users/bjethwani/SimplicityStudio/SDKs/simplicity_sdk//platform/driver/leddrv/inc/sl_simple_led.h \
  /Users/bjethwani/SimplicityStudio/SDKs/simplicity_sdk//platform/driver/leddrv/inc/sl_led.h \
  /Users/bjethwani/SimplicityStudio/SDKs/simplicity_sdk//platform/common/inc/sl_status.h \
@@ -86,7 +86,8 @@
  /Users/bjethwani/SimplicityStudio/SDKs/simplicity_sdk//util/third_party/freertos/kernel/include/queue.h \
  /Users/bjethwani/SimplicityStudio/SDKs/simplicity_sdk//util/third_party/freertos/kernel/include/task.h \
  /Users/bjethwani/SimplicityStudio/SDKs/simplicity_sdk//util/third_party/freertos/kernel/include/list.h \
- /Users/bjethwani/SimplicityStudio/SDKs/simplicity_sdk//util/third_party/freertos/kernel/include/task.h
+ /Users/bjethwani/SimplicityStudio/SDKs/simplicity_sdk//util/third_party/freertos/kernel/include/task.h \
+ /Users/bjethwani/SimplicityStudio/SDKs/simplicity_sdk//util/third_party/freertos/kernel/include/timers.h
 /Users/bjethwani/SimplicityStudio/SDKs/simplicity_sdk//platform/driver/leddrv/inc/sl_simple_led.h:
 /Users/bjethwani/SimplicityStudio/SDKs/simplicity_sdk//platform/driver/leddrv/inc/sl_led.h:
 /Users/bjethwani/SimplicityStudio/SDKs/simplicity_sdk//platform/common/inc/sl_status.h:
@@ -175,3 +176,4 @@
 /Users/bjethwani/SimplicityStudio/SDKs/simplicity_sdk//util/third_party/freertos/kernel/include/task.h:
 /Users/bjethwani/SimplicityStudio/SDKs/simplicity_sdk//util/third_party/freertos/kernel/include/list.h:
 /Users/bjethwani/SimplicityStudio/SDKs/simplicity_sdk//util/third_party/freertos/kernel/include/task.h:
+/Users/bjethwani/SimplicityStudio/SDKs/simplicity_sdk//util/third_party/freertos/kernel/include/timers.h:

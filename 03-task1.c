@@ -21,14 +21,15 @@
 #include "FreeRTOS.h"
 #include "semphr.h"
 #include "task.h"
-#include "timers.h"
 
 /*******************************************************************************
  *******************************   DEFINES   ***********************************
  ******************************************************************************/
 
 
-
+#ifndef TOOGLE_DELAY_MS
+#define TOOGLE_DELAY_MS            100
+#endif
 
 #ifndef BLINK_TASK_STACK_SIZE
 #define BLINK_TASK_STACK_SIZE      configMINIMAL_STACK_SIZE
@@ -43,8 +44,6 @@
 #endif
 
 extern SemaphoreHandle_t semaphore_handle;
-
-
 /*******************************************************************************
  ***************************  LOCAL VARIABLES   ********************************
  ******************************************************************************/
@@ -53,7 +52,8 @@ extern SemaphoreHandle_t semaphore_handle;
  *********************   LOCAL FUNCTION PROTOTYPES   ***************************
  ******************************************************************************/
 
-static void task2_task(void *arg);
+static void task1_task(void *arg);
+
 /*******************************************************************************
  **************************   GLOBAL FUNCTIONS   *******************************
  ******************************************************************************/
@@ -61,7 +61,7 @@ static void task2_task(void *arg);
 /***************************************************************************//**
  * Initialize blink example.
  ******************************************************************************/
-void task2_init(void)
+void task1_init(void)
 {
   TaskHandle_t xHandle = NULL;
 
@@ -71,7 +71,7 @@ void task2_init(void)
   static StackType_t  xStack[BLINK_TASK_STACK_SIZE];
 
   // Create Blink Task without using any dynamic memory allocation
-  xHandle = xTaskCreateStatic(task2_task,
+  xHandle = xTaskCreateStatic(task1_task,
                               "blink task",
                               BLINK_TASK_STACK_SIZE,
                               ( void * ) NULL,
@@ -89,7 +89,7 @@ void task2_init(void)
   BaseType_t xReturned = pdFAIL;
 
   // Create Blink Task using dynamic memory allocation
-  xReturned = xTaskCreate(task2_task,
+  xReturned = xTaskCreate(task1_task,
                           "blink task",
                           BLINK_TASK_STACK_SIZE,
                           ( void * ) NULL,
@@ -106,28 +106,35 @@ void task2_init(void)
 /*******************************************************************************
  * Blink task.
  ******************************************************************************/
-static void task2_task(void *arg)
+static void task1_task(void *arg)
 {
   (void)&arg;
+
   //Use the provided calculation macro to convert milliseconds to OS ticks
-  const TickType_t xDelay = pdMS_TO_TICKS(3000);
+  const TickType_t xDelay = pdMS_TO_TICKS(TOOGLE_DELAY_MS);;
 
   while (1) {
     //Wait for specified delay
+      if(sl_button_get_state(&sl_button_btn0))
+        {
+        while(sl_button_get_state(&sl_button_btn0))
+          {
+            vTaskDelay(xDelay);
+          }
+        if(xSemaphoreGive(semaphore_handle) == pdTRUE)
+            {
+            if(uxSemaphoreGetCount(semaphore_handle) == 1)
+             {
+               sl_led_turn_on(&sl_led_led0);
+             }
+           else if(uxSemaphoreGetCount(semaphore_handle) == 2)
+             {
+               sl_led_turn_on(&sl_led_led1);
+             }
+            }
+        }
     vTaskDelay(xDelay);
-    if(uxSemaphoreGetCount(semaphore_handle) == 2)
-      {
-        sl_led_turn_on(&sl_led_led1);
-        sl_led_turn_off(&sl_led_led0);
-        xSemaphoreTake(semaphore_handle, 0);
-        xSemaphoreTake(semaphore_handle, 0);
-      }
-    else if(uxSemaphoreGetCount(semaphore_handle) == 1)
-      {
-    sl_led_turn_off(&sl_led_led0);
-    xSemaphoreTake(semaphore_handle, 0);
-      }
+
+    // Toggle led
   }
 }
-
-

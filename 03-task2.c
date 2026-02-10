@@ -110,24 +110,24 @@ static void task2_task(void *arg)
 {
   (void)&arg;
   //Use the provided calculation macro to convert milliseconds to OS ticks
-  const TickType_t xDelay = pdMS_TO_TICKS(3000);
+  const TickType_t xDelay = pdMS_TO_TICKS(100);
 
   while (1) {
     //Wait for specified delay
     vTaskDelay(xDelay);
-    if(uxSemaphoreGetCount(semaphore_handle) == 2)
-      {
-        sl_led_turn_on(&sl_led_led1);
-        sl_led_turn_off(&sl_led_led0);
-        xSemaphoreTake(semaphore_handle, 0);
-        xSemaphoreTake(semaphore_handle, 0);
-      }
-    else if(uxSemaphoreGetCount(semaphore_handle) == 1)
-      {
-    sl_led_turn_off(&sl_led_led0);
-    xSemaphoreTake(semaphore_handle, 0);
-      }
   }
+}
+
+void sl_button_on_change(const sl_button_t * handle)
+{
+  BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+  if(handle == &sl_button_btn1)
+    {
+      sl_led_turn_off(&sl_led_led0);
+      sl_led_turn_off(&sl_led_led1);
+      while(xSemaphoreTakeFromISR(semaphore_handle, &xHigherPriorityTaskWoken) == pdTRUE);
+      portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+    }
 }
 
 
